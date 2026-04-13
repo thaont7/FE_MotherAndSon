@@ -9,7 +9,7 @@ export default function ProjectList() {
   return (
     <div>
       <Button type="primary" style={{ marginBottom: 10 }}>
-        Create User
+        Create Users
       </Button>
       <Table
         loading={isLoading}
