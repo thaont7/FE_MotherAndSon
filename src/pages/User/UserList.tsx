@@ -1,10 +1,9 @@
 import { Table, Button } from "antd";
-import { useList, useCrud } from "../../hooks/useCrud";
+import { useList } from "../../hooks/useCrud";
 import { userService } from "../../services/userService";
 
 export default function UserList() {
   const { data, isLoading } = useList("users", userService.getList);
-  const crud = useCrud("users", userService);
 
   return (
     <div>
@@ -20,11 +19,7 @@ export default function UserList() {
           { title: "Title/Name", dataIndex: "name" },
           {
             title: "Action",
-            render: (_, r: any) => (
-              <Button danger onClick={() => crud.delete.mutate(r.id)}>
-                Delete
-              </Button>
-            ),
+            render: (_, r: any) => <Button danger>Delete</Button>,
           },
         ]}
       />
