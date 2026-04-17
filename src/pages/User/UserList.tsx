@@ -4,6 +4,7 @@ import { userService } from "../../services/userService";
 
 export default function UserList() {
   const { data, isLoading } = useList("users", userService.getList);
+  console.log("🚀 ~ UserList ~ data:", data)
 
   return (
     <div>

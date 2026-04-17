@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { UserRole, Permission } from "../types/auth";
-import UserList from "../pages/User/UserList";
 import TaskList from "../pages/Task/TaskList";
 import ProjectList from "../pages/Project/ProjectList";
+import { HomePage } from "../pages/HomePage/homePage";
 
 /**
  * Định nghĩa cấu trúc route
@@ -26,11 +26,10 @@ export interface RouteConfig {
 export const routeConfigs: RouteConfig[] = [
   {
     path: "/",
-    element: <UserList />,
-    label: "Người dùng",
+    element: <HomePage />,
+    label: "Trang chủ",
     icon: "UserOutlined",
-    requiredRoles: [UserRole.ADMIN, UserRole.MANAGER],
-    requiredPermissions: [Permission.VIEW_USERS],
+    isPublic: true,
   },
   {
     path: "/tasks",
@@ -55,5 +54,7 @@ export const routeConfigs: RouteConfig[] = [
  * (các routes không bị ẩn)
  */
 export const getMenuRoutes = (): RouteConfig[] => {
-  return routeConfigs.filter((route) => !route.children || route.children.length > 0);
+  return routeConfigs.filter(
+    (route) => !route.children || route.children.length > 0,
+  );
 };
