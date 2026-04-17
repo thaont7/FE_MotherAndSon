@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AuthProvider } from "./hooks/useAuth";
 import Layout from "./layouts/MainLayout";
 import Login from "./pages/Auth/Login";
 import Forbidden from "./pages/Error/Forbidden";
 import { routeConfigs } from "./router/routes";
+import { AuthProvider } from "./hooks/useAuth";
 import { ProtectedRoute } from "./router/ProtectedRoute";
 
 /**

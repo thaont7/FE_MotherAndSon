@@ -1,5 +1,6 @@
-import React, { useState, useCallback, createContext, useContext, useMemo } from "react";
+import React, { useState, useCallback, createContext, useContext, useMemo, useEffect } from "react";
 import { AuthState, UserRole } from "../types/auth";
+import { saveAuthToStorage, getAuthFromStorage, clearAuthFromStorage } from "../utils/authStorage";
 
 interface AuthContextType {
   authState: AuthState;
@@ -14,16 +15,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  * Provider cho Auth Context
  */
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // Giả sử từ localStorage hoặc initial state
-  const [authState, setAuthState] = useState<AuthState>({
-    isAuthenticated: false,
-    user: null,
+  // Khôi phục auth state từ localStorage khi khởi động
+  const [authState, setAuthState] = useState<AuthState>(() => {
+    const cachedAuth = getAuthFromStorage();
+    return cachedAuth || {
+      isAuthenticated: false,
+      user: null,
+    };
   });
 
   const login = useCallback(async (email: string, password: string, role: UserRole = UserRole.USER) => {
     // TODO: Call API login
     // Tạm thời set mock user
-    setAuthState({
+    const newAuthState = {
       isAuthenticated: true,
       user: {
         id: "1",
@@ -31,14 +35,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email: email,
         role: role, // Sử dụng role được truyền vào
       },
-    });
+    };
+    setAuthState(newAuthState);
+    // Lưu vào localStorage
+    saveAuthToStorage(newAuthState);
   }, []);
 
   const logout = useCallback(() => {
-    setAuthState(() => ({
+    const newAuthState = {
       isAuthenticated: false,
       user: null,
-    }));
+    };
+    setAuthState(newAuthState);
+    // Xóa khỏi localStorage
+    clearAuthFromStorage();
   }, []);
 
   // Tối ưu hiệu năng bằng useMemo để tránh re-render các component con
@@ -46,6 +56,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({ authState, login, logout, setAuthState }),
     [authState, login, logout, setAuthState]
   );
+
+  // Auto-save authState to localStorage whenever it changes
+  useEffect(() => {
+    if (authState.isAuthenticated && authState.user) {
+      saveAuthToStorage(authState);
+    }
+  }, [authState]);
 
   return (
     <AuthContext.Provider value={value}>

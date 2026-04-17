@@ -1,41 +1,38 @@
-import { Layout, Menu, Button, Dropdown, Space, Avatar } from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import { LogoutOutlined } from "@ant-design/icons";
-import { useAuth } from "../hooks/useAuth";
-import { usePermission } from "../hooks/usePermission";
-import { Permission } from "../types/auth";
+import { Layout } from "antd";
+import { useNavigate } from "react-router-dom";
+import MainHeader from "../components/Header/header";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export default function MainLayout({ children }: any) {
-  const { authState, logout } = useAuth();
-  const { hasPermission } = usePermission();
-  const navigate = useNavigate();
+  // const { authState, logout } = useAuth();
+  // const { hasPermission } = usePermission();
+  // const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   logout();
+  //   navigate("/login");
+  // };
 
-  const userMenuItems: any = [
-    {
-      label: `${authState.user?.name} (${authState.user?.role})`,
-      disabled: true,
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "Đăng xuất",
-      key: "logout",
-      icon: <LogoutOutlined />,
-      onClick: handleLogout,
-    },
-  ];
+  // const userMenuItems: any = [
+  //   {
+  //     label: `${authState.user?.name} (${authState.user?.role})`,
+  //     disabled: true,
+  //   },
+  //   {
+  //     type: "divider",
+  //   },
+  //   {
+  //     label: "Đăng xuất",
+  //     key: "logout",
+  //     icon: <LogoutOutlined />,
+  //     onClick: handleLogout,
+  //   },
+  // ];
 
   return (
     <Layout>
-      <Header
+      {/* <Header
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -73,7 +70,8 @@ export default function MainLayout({ children }: any) {
             </Dropdown>
           </Space>
         )}
-      </Header>
+      </Header> */}
+      <MainHeader />
       <Content style={{ padding: 20 }}>{children}</Content>
     </Layout>
   );
